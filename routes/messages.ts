@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import io from '../socket'
+
 import { Message } from '../models/message';
 
 const messages: Message[] = [{ id: "testId", message: 'This is my message' }]
@@ -19,7 +21,7 @@ router.post('/message', (req, res, next) => {
 	 };
 
 	 messages.push(newMessage);
-
+	 io.getIO().emit('messages', { action: 'create', newMessage: newMessage });
 	 res.status(201).json({ message: 'Added message', newMessage: newMessage, messages: messages });
 });
 
