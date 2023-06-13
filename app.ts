@@ -1,11 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import socketIo from './socket';
+import mongoose from 'mongoose';
 
 import messagesRouter from './routes/messages'
 
+const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.mb2j7mq.mongodb.net/?retryWrites=true&w=majority`
+
 const app = express();
-const PORT = 8080;
 
 app.use(bodyParser.json());
 
@@ -21,11 +23,15 @@ app.use((req, res, next) => {
 
 app.use(messagesRouter);
 
-const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+mongoose.connect(MONGO_URI).then(result => {
+	const server = app.listen(process.env.PORT || 8080, () => {
+		console.log(`Server is running on port ${process.env.PORT || 8080}`);
+	});
 
-const io = socketIo.init(server);
-io.on('connection', (socket: any) => {
-  console.log(`Client ${socket.id} connected.`);
+	const io = socketIo.init(server);
+	io.on('connection', (socket: any) => {
+		console.log(`Client ${socket.id} connected.`);
+	});
+}).catch(error => {
+	console.log(error);
 });
