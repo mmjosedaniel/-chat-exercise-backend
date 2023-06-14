@@ -14,20 +14,16 @@ export const getMessages: RequestHandler =  (_req, res, _next) => {
 }
 
 export const postMessage: RequestHandler = (req, res, _next) => {
-	console.log(req.body);
-	const newMessage = new Message({ message: req.body.text })
+	const newMessage = new Message({
+		message: req.body.text,
+		creator: { name: 'Daniel' }
+	})
+
 	newMessage.save()
 	.then(result => {
-		io.getIO().emit('messages', { action: 'create', newMessage: newMessage });
-		res.status(201).json({ message: 'Added message', newMessage: newMessage });
+		io.getIO().emit('messages', { action: 'create', newMessage: result });
+		res.status(201).json({ message: 'Added message', newMessage: result });
 	}).catch(error => {
 		console.log(error);
 	});
-	// const newMessage: Message = { 
-	// 	id: new Date().toISOString(),
-	// 	message: req.body.text
-	//  };
-
-	//  messages.push(newMessage);
-
 }

@@ -8,8 +8,10 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
-	message: String
-});
+	message: String,
+	creator: Object
+},
+{ timestamps: true });
 
 const Message = mongoose.model('Message', messageSchema);
 

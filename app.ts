@@ -4,6 +4,7 @@ import socketIo from './socket';
 import mongoose from 'mongoose';
 
 import messagesRouter from './routes/messages'
+import authRouter from './routes/auth'
 
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.mb2j7mq.mongodb.net/?retryWrites=true&w=majority`
 
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use(messagesRouter);
+app.use('/auth', authRouter);
 
 mongoose.connect(MONGO_URI).then(result => {
 	const server = app.listen(process.env.PORT || 8080, () => {
