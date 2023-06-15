@@ -3,10 +3,22 @@ import mongoose, { SchemaType } from "mongoose";
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	email: String,
-	password: String,
-	name: String,
-	status: String,
+	email: {
+		type: String,
+		required: true
+	},
+	password: {
+		type:String,
+		required: true
+	},
+	name: {
+		type:String,
+		required: true
+	},
+	status: {
+		type:String,
+		required: true
+	},
 	messages: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Message'
