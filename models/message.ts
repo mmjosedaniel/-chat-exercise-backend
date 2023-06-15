@@ -9,7 +9,10 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
 	message: String,
-	creator: Object
+	creator: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	}
 },
 { timestamps: true });
 
