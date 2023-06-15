@@ -1,9 +1,11 @@
+import { RequestHandler } from 'express';
+import { validationResult } from 'express-validator';
+
 import Message from "../models/message"
 import User from "../models/user"
-
-import { RequestHandler } from 'express'
-
 import io from '../socket'
+
+
 
 export const getMessages: RequestHandler =  (_req, res, _next) => {
 	Message.find()
@@ -17,6 +19,11 @@ export const getMessages: RequestHandler =  (_req, res, _next) => {
 }
 
 export const postMessage: RequestHandler = (req: any, res, _next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ message: 'Validation failed, entered message is incorrect.', errors: errors.array() });
+	};
+
 	let creator;
 
 	const newMessage = new Message({

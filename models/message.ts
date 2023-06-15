@@ -8,10 +8,14 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
-	message: String,
+	message: {
+		type: String,
+		required: true
+	},
 	creator: {
 		type: Schema.Types.ObjectId,
-		ref: 'User'
+		ref: 'User',
+		required: true
 	}
 },
 { timestamps: true });
